@@ -2,8 +2,8 @@
 # ARG PYTORCH="1.9.0"
 # ARG CUDA="11.1"
 
-ARG PYTORCH="2.1.0"
-ARG CUDA="11.8"
+ARG PYTORCH="2.1.1"
+ARG CUDA="12.1"
 ARG CUDNN="8"
 
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
@@ -31,5 +31,8 @@ RUN rm -rf /var/lib/apt/lists/*
 
 # For faster build, use more jobs.
 ENV MAX_JOBS=4
-RUN git clone --recursive "https://github.com/NVIDIA/MinkowskiEngine"
-RUN cd MinkowskiEngine; python setup.py install --force_cuda --blas=openblas
+
+COPY . /MinkowskiEngine
+WORKDIR /MinkowskiEngine
+RUN ls
+RUN python setup.py install --force_cuda --blas=openblas
